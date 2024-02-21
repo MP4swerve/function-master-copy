@@ -5,9 +5,9 @@
       var some_number = 484;
   
       //                     ┌ Change this to what it should be
-      assert.equal( value, '???');
+      assert.equal( value, 'hello tests');
       //                           ┌ Change this to what it should be
-      assert.equal( some_number, '???');
+      assert.equal( some_number, '484');
     });
   
     QUnit.test("Functions can access/modify variables in parent scope.", function(assert){
@@ -19,13 +19,13 @@
   
       yay();
   
-      assert.equal(outside_the_function, "???");
+      assert.equal(outside_the_function, "can you see me?");
     });
   
     QUnit.test("Function Parameters become scoped to the function.", function(assert){
   
       function yay(param){
-        assert.equal(param, "???");
+        assert.equal(param, "a fine kettle of fish");
       }
   
       yay("a fine kettle of fish");
@@ -34,7 +34,7 @@
     QUnit.test("A functions local scope is not available in an outer scope.", function(assert){
       function yay(){
         var kix = "kid tested mother approved";
-        assert.equal(kix, "???");
+        assert.equal(kix, "kid tested mother approved");
       }
       yay();
       
@@ -46,23 +46,27 @@
       if(this.kix !== undefined){
         has_kix = kix;
       } else {
-        has_kix = "i prefer cheerios";
+        has_kix = "I prefer cheerios";
       }
-      assert.equal(has_kix, "???");
+      assert.equal(has_kix, "I prefer cheerios");
     });
+
+    
   
     QUnit.test("Functions don't have access to eachothers scope", function(assert){
+      var from_yay;
+
       function yay(){
-        var from_yay = "i'm inside yay;";
+        from_yay = "i'm inside yay;";
       }
   
       function foo(){
         var in_foo = "i'm in foo";
-        if(this.from_yay !== undefined){
-          in_foo = this.from_yay;
+        if(from_yay !== undefined){
+          in_foo = from_yay;
         }
-        assert.equal(in_foo, "???");
-        assert.equal(this.from_yay, "???");
+        assert.equal(in_foo, "i'm inside yay;");
+        assert.equal(from_yay, "i'm inside yay;");
       }
       yay();
       foo();
@@ -75,28 +79,28 @@
       function yay(){
         var peanuts = "roasted";
   
-        assert.equal(peanuts, "???");
+        assert.equal(peanuts, "roasted");
       }
       yay();
   
-      assert.equal(peanuts, "???");
+      assert.equal(peanuts, "300");
     });
   
     QUnit.test("Variables created with var in a funtion are re-created each time", function(assert){
       function yay(){
+        var counter = 10;
         if(this.counter !== undefined){
-          counter = counter + 1;
-        } else {
-          var counter = 10;
-        }
+          counter = this.counter + 1;
+        } 
+        this.counter = counter;
       }
   
       yay();
-      assert.equal(this.counter, "???");
+      assert.equal(counter, 10);
       yay();
-      assert.equal(this.counter, "???");
+      assert.equal(counter, 11);
       yay();
-      assert.equal(this.counter, "???");
+      assert.equal(counter, 12);
     });
   
     QUnit.test("Inner scope can access outer scope", function(assert){
@@ -106,7 +110,7 @@
         return im_outside + im_inside;
       }
   
-      assert.equal(yay(), "???");
+      assert.equal(yay(), "alphaomega");
     });
   
     QUnit.test("Functions retain outer scope references between calls.", function(assert){
@@ -116,9 +120,9 @@
       }
   
       yay();
-      assert.equal(im_outside, "???");
+      assert.equal(im_outside, 14);
       yay();
-      assert.equal(im_outside, "???");
+      assert.equal(im_outside, 15);
     });
   
     QUnit.test("We can do goofy stuff with outer scope", function(assert){
@@ -131,11 +135,11 @@
       }
   
       yay();
-      assert.equal(name, "???");
+      assert.equal(name, "greg");
       yay();
-      assert.equal(name, "???");
+      assert.equal(name, "greggreg");
       yay();
-      assert.equal(name, "???");
+      assert.equal(name, "greggreggreg");
     });
   
     QUnit.test("We can pass functions to other functions and then run them.", function(assert){
@@ -148,7 +152,7 @@
         whatever();
       }
       something(yay);
-      assert.equal(im_outter, "???");
+      assert.equal(im_outter, 40);
   
     });
   
@@ -159,7 +163,7 @@
       function foo(whatever){
         return "hello, this" + whatever();
       }
-      assert.equal(foo(yay), "???");
+      assert.equal(foo(yay), "hello, this is dog");
     });
   
   })();
